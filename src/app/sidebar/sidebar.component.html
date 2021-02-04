@@ -1,0 +1,52 @@
+<div class="example-container">
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #snav mode="side" disableClose opened [ngClass]="{'mat-drawer-closed': isClosed}">
+            <div id="full-sidenav">
+                <div id="sidebar-header">
+                    <a (click)="isClosed = !isClosed" id="toggleMenuButton">
+                        <img src="assets/icons/menu.svg">
+                    </a>
+                    <img src="assets/icons/BrainfinityLogo1.svg" alt="logo" id="logo">
+                </div>
+                <div id="sidebar-profile">
+                    <div id="profile-pic">
+                        <img src="assets/icons/avatar.png" alt="profile-pic">
+                    </div>
+                    <span id="user-name">Živko Hrastić</span>
+                    <span id="user-role">Supervizor</span>
+                </div>
+                <mat-nav-list>
+                    <a mat-list-item routerLink="/users" [routerLinkActive]="['is-active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <div class="nav-item">
+                            <img src="assets/icons/users-dark.svg">
+                            <span>Korisnici</span>
+                        </div>
+                    </a>
+                    <a mat-list-item routerLink="/" [routerLinkActive]="['is-active']" #rla="routerLinkActive"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <div class="nav-item">
+                            <img *ngIf="!rla.isActive" src="assets/icons/award-dark.svg">
+                            <img *ngIf="rla.isActive" src="assets/icons/award-light.svg">
+                            <span>Takmičenja</span>
+                        </div>
+                    </a>
+                    <a mat-list-item routerLink="/corrections" [routerLinkActive]="['is-active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <div class="nav-item">
+                            <img src="assets/icons/bell-dark.svg">
+                            <span>Korekture</span>
+                        </div>
+                    </a>
+                </mat-nav-list>
+            </div>
+        </mat-sidenav>
+
+        <mat-sidenav-content [ngClass]="{'mat-drawer-closed': isClosed}">
+            <mat-toolbar class="example-toolbar">
+                <h1 class="example-app-name">Responsive App</h1>
+            </mat-toolbar>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
