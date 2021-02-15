@@ -8,13 +8,12 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MatSidenavModule, } from "@angular/material/sidenav";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
-import { MatIconModule } from "@angular/material/icon";
-
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,7 +22,7 @@ import { MatIconModule } from "@angular/material/icon";
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatIconModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
