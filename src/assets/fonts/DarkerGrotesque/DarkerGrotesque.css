@@ -1,0 +1,9 @@
+@font-face{
+    font-family: DarkerGrotesqueBlack;
+    src: url(DarkerGrotesque-Black.ttf)
+}
+
+@font-face{
+    font-family: DarkerGrotesqueSemibold;
+    src: url(DarkerGrotesque-Semibold.ttf);
+}
