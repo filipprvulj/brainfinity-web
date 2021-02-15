@@ -7,3 +7,8 @@
     font-family: DarkerGrotesqueSemibold;
     src: url(DarkerGrotesque-Semibold.ttf);
 }
+
+@font-face{
+    font-family: DarkerGrotesqueBold;
+    src: url(DarkerGrotesque-Bold.ttf);
+}
