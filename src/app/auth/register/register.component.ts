@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -35,20 +35,41 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.registerFormGroup = this._formBuilder.group({
       firstFormGroup: this._formBuilder.group({
-        email: ['', Validators.required],
-        password: ['', Validators.required],
-        passwordConfirm: ['', Validators.required]
+        email: ['', [Validators.required, Validators.email]],
+        passwordFormGroup: this._formBuilder.group({
+          password: ['', [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(
+              /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~])[0-9a-zA-Z !"#$%&'()*+,-.\/:;<=>?@[\]^_`{|}~]+/
+            )
+          ]],
+          passwordConfirm: ['', [Validators.required]]
+        }, { validators: this.isPasswordConfirmed })
       }),
+
       secondFormGroup: this._formBuilder.group({
         teamName: ['', Validators.required],
         logo: ['', Validators.required],
         teamImage: ['', Validators.required]
       }),
+
       thirdFormGroup: this._formBuilder.group({
+        mentorEmail: ['', [Validators.required, Validators.email]],
+        mentorFirstName: ['', Validators.required],
+        mentorLastName: ['', Validators.required]
+      }),
+
+      fourthFormGroup: this._formBuilder.group({
         teamMemberFirstName: ['', Validators.required],
         teamMemberLastName: ['', Validators.required]
       })
     })
+  }
+
+  isPasswordConfirmed(c: FormGroup): ValidationErrors {
+
+    return c.get("password").value === c.get("passwordConfirm").value ? null : { mismatch: true };
   }
 
   addTeamMember(firstName: string, lastName: string) {
@@ -68,14 +89,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.teamMembers.splice(index, 1);
   }
 
+  onPasswordInput() {
+    if (this.registerFormGroup.get(['firstFormGroup', 'passwordFormGroup']).errors?.mismatch) {
+      this.registerFormGroup.get(['firstFormGroup', 'passwordFormGroup']).get('passwordConfirm').setErrors({ mismatch: true });
+    }
+  }
+
   onSubmit() {
     var registerModelFormData = new FormData();
 
-    registerModelFormData.append("email", this.registerFormGroup.controls['firstFormGroup'].value.email);
-    registerModelFormData.append("password", this.registerFormGroup.controls['firstFormGroup'].value.password);
-    registerModelFormData.append("teamName", this.registerFormGroup.controls['secondFormGroup'].value.teamName);
-    registerModelFormData.append("logo", this.registerFormGroup.controls['secondFormGroup'].value.logo.files[0]);
-    registerModelFormData.append("teamPicture", this.registerFormGroup.controls['secondFormGroup'].value.teamImage.files[0]);
+    registerModelFormData.append("email", this.registerFormGroup.get(['firstFormGroup', 'email']).value);
+    registerModelFormData.append("password", this.registerFormGroup.get(['firstFormGroup', 'passwordFormGroup', 'password']).value);
+    registerModelFormData.append("teamName", this.registerFormGroup.get(['secondFormGroup', 'teamName']).value);
+    registerModelFormData.append("logo", this.registerFormGroup.get(['secondFormGroup', 'logo']).value.files[0]);
+    registerModelFormData.append("teamPicture", this.registerFormGroup.get(['secondFormGroup', 'teamImage']).value.files[0]);
+    registerModelFormData.append("teamMentor[email]", this.registerFormGroup.get(['thirdFormGroup', 'mentorEmail']).value);
+    registerModelFormData.append("teamMentor[firstName]", this.registerFormGroup.get(['thirdFormGroup', 'mentorFirstName']).value);
+    registerModelFormData.append("teamMentor[lastName]", this.registerFormGroup.get(['thirdFormGroup', 'mentorLastName']).value);
 
     for (var i = 0; i < this.teamMembers.length; i++) {
       registerModelFormData.append(`teamMembers[${i}][firstName]`, this.teamMembers[i].firstName);

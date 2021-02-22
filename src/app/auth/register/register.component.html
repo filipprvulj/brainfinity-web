@@ -11,17 +11,47 @@
                     <mat-form-field>
                         <mat-label>Email</mat-label>
                         <input matInput placeholder="unesi email" formControlName="email" required />
+                        <mat-error *ngIf="registerFormGroup.get('firstFormGroup').get('email').errors?.required">
+                            Ovo polje je obavezno
+                        </mat-error>
+                        <mat-error *ngIf="registerFormGroup.get('firstFormGroup').get('email').errors?.email">
+                            Email format nije validan
+                        </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Lozinka</mat-label>
-                        <input matInput type="password" placeholder="unesi lozinku" formControlName="password"
-                            required />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Potvrda lozinke</mat-label>
-                        <input matInput type="password" placeholder="potvrdi lozinku" formControlName="passwordConfirm"
-                            required />
-                    </mat-form-field>
+                    <div formGroupName="passwordFormGroup">
+                        <mat-form-field>
+                            <mat-label>Lozinka</mat-label>
+                            <input matInput type="password" placeholder="unesi lozinku" formControlName="password"
+                                (input)="onPasswordInput()" required />
+                            <mat-error
+                                *ngIf="registerFormGroup.get('firstFormGroup').get(['passwordFormGroup','password']).errors?.required">
+                                Ovo polje je obavezno
+                            </mat-error>
+                            <mat-error
+                                *ngIf="registerFormGroup.get('firstFormGroup').get(['passwordFormGroup','password']).errors?.minlength">
+                                Lozinka mora sadržati najmanje 8 karaktera
+                            </mat-error>
+                            <mat-error
+                                *ngIf="registerFormGroup.get('firstFormGroup').get(['passwordFormGroup','password']).errors?.pattern">
+                                Lozinka mora sadržati veliko i malo slovo, broj i specijalni karakter
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Potvrda lozinke</mat-label>
+                            <input matInput type="password" placeholder="potvrdi lozinku" (input)="onPasswordInput()"
+                                formControlName="passwordConfirm" required />
+                            <mat-error
+                                *ngIf="registerFormGroup.get(['firstFormGroup','passwordFormGroup']).get('passwordConfirm').errors?.required">
+                                Ovo polje je obavezno
+                            </mat-error>
+                            <mat-error
+                                *ngIf="registerFormGroup.get(['firstFormGroup','passwordFormGroup']).get('passwordConfirm').errors?.mismatch && 
+                                !registerFormGroup.get(['firstFormGroup','passwordFormGroup']).get('passwordConfirm').errors?.required">
+                                Lozinke se ne podudaraju
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
                     <div>
                         <button class="form-button float-right" mat-button matStepperNext>
                             Sledeći korak
@@ -36,6 +66,9 @@
                     <mat-form-field>
                         <mat-label>Naziv tima</mat-label>
                         <input matInput formControlName="teamName" placeholder="unesi naziv tima" required />
+                        <mat-error *ngIf="registerFormGroup.get('secondFormGroup').get('teamName').errors?.required">
+                            Ovo polje je obavezno
+                        </mat-error>
                     </mat-form-field>
                     <div class="row">
                         <div class="col-md-6">
@@ -44,6 +77,10 @@
                                 <ngx-mat-file-input formControlName="logo" placeholder="unesi logo tima" required>
                                 </ngx-mat-file-input>
                                 <mat-icon matSuffix class="folder-icon">folder</mat-icon>
+                                <mat-error
+                                    *ngIf="registerFormGroup.get('secondFormGroup').get('logo').errors?.required">
+                                    Ovo polje je obavezno
+                                </mat-error>
                             </mat-form-field>
                         </div>
                         <div class="col-md-6">
@@ -52,6 +89,10 @@
                                 <ngx-mat-file-input formControlName="teamImage" placeholder="unesi sliku tima" required>
                                 </ngx-mat-file-input>
                                 <mat-icon matSuffix class="folder-icon">folder</mat-icon>
+                                <mat-error
+                                    *ngIf="registerFormGroup.get('secondFormGroup').get('teamImage').errors?.required">
+                                    Ovo polje je obavezno
+                                </mat-error>
                             </mat-form-field>
                         </div>
                     </div>
@@ -69,6 +110,47 @@
             </mat-step>
             <mat-step [stepControl]="registerFormGroup.get('thirdFormGroup')">
                 <div formGroupName="thirdFormGroup">
+                    <ng-template matStepLabel>Mentor</ng-template>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="unesi email" formControlName="mentorEmail" required />
+                        <mat-error *ngIf="registerFormGroup.get('thirdFormGroup').get('mentorEmail').errors?.required">
+                            Ovo polje je obavezno
+                        </mat-error>
+                        <mat-error *ngIf="registerFormGroup.get('thirdFormGroup').get('mentorEmail').errors?.email">
+                            Email format nije validan
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Ime mentora</mat-label>
+                        <input matInput type="text" placeholder="unesi ime" formControlName="mentorFirstName"
+                            required />
+                        <mat-error
+                            *ngIf="registerFormGroup.get('thirdFormGroup').get('mentorFirstName').errors?.required">
+                            Ovo polje je obavezno
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Prezime mentora</mat-label>
+                        <input matInput type="text" placeholder="unesi prezime" formControlName="mentorLastName"
+                            required />
+                        <mat-error
+                            *ngIf="registerFormGroup.get('thirdFormGroup').get('mentorLastName').errors?.required">
+                            Ovo polje je obavezno
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div>
+                        <button class="form-button float-right" mat-button matStepperNext>
+                            Sledeći korak
+                            <mat-icon>keyboard_arrow_right</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step [stepControl]="registerFormGroup.get('fourthFormGroup')">
+                <div formGroupName="fourthFormGroup">
                     <ng-template matStepLabel>Članovi tima</ng-template>
                     <div class="row">
                         <div class="col-md-8">
@@ -78,6 +160,10 @@
                                         <mat-label>Ime</mat-label>
                                         <input matInput formControlName="teamMemberFirstName"
                                             placeholder="unesi naziv tima" required #firstNameInput />
+                                        <mat-error
+                                            *ngIf="registerFormGroup.get('fourthFormGroup').get('teamMemberFirstName').errors?.required">
+                                            Ovo polje je obavezno
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-12">
@@ -85,15 +171,25 @@
                                         <mat-label>Prezime</mat-label>
                                         <input matInput formControlName="teamMemberLastName"
                                             placeholder="unesi naziv tima" required #lastNameInput />
+                                        <mat-error
+                                            *ngIf="registerFormGroup.get('fourthFormGroup').get('teamMemberLastName').errors?.required">
+                                            Ovo polje je obavezno
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-12">
-                                    <mat-icon *ngIf="teamMembers.length < 5" class="add-button"
+                                    <mat-icon *ngIf="teamMembers.length < 4" class="add-button"
                                         (click)="addTeamMember(firstNameInput.value, lastNameInput.value)">
                                         <span class="add-icon-span">add_circle_outline</span> <span class="add-span">
                                             Dodaj
                                             novog člana</span>
                                     </mat-icon>
+                                    <br>
+                                    <span *ngIf="teamMembers.length < 4"
+                                        style="font-family: DarkerGrotesqueSemibold; color: rgba(0, 0, 0, 0.6)">Morate
+                                        uneti tačno
+                                        4 člana
+                                        tima</span>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +213,8 @@
                                 <mat-icon>keyboard_arrow_left</mat-icon>
                                 Nazad
                             </button>
-                            <button mat-button class="btn btn-primary registration-submit float-right"
+                            <button [disabled]="teamMembers.length != 4" mat-button
+                                class="btn btn-primary registration-submit float-right"
                                 (click)="onSubmit()"><span>Registruj
                                     se</span></button>
 
