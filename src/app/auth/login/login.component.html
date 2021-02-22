@@ -1,0 +1,22 @@
+<div class="login-wrapper">
+    <div class="login-logo">
+        <img src="../../../assets/icons/BrainfinityLogo1.svg" alt="">
+    </div>
+    <div class="login-header"><span>Login</span></div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+        <div class="login-content">
+            <div class="email-group">
+                <label class="login-label">E-mail</label>
+                <input type="email" class="login-input" placeholder="primer@gmail.com" formControlName="email">
+            </div>
+            <div class="password-group">
+                <label class="login-label">Lozinka</label>
+                <input type="password" class="login-input" placeholder="Lozinka" formControlName="password">
+            </div>
+            <div class="form-buttons">
+                <a routerLink="/auth/register">Registruj se</a>
+                <button type="submit" class="btn btn-primary float-right login-button">Login</button>
+            </div>
+        </div>
+    </form>
+</div>
