@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NonAuthGuard } from './core/guards/non-auth.guard';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: SidebarComponent,
+    component: MainComponent,
     canLoad: [AuthGuard],
     canActivate: [AuthGuard]
   },
