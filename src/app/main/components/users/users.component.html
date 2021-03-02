@@ -1,0 +1,27 @@
+<div class="users-component-wrapper">
+    <div class="user-component-header">
+        <div class="row">
+            <div class="col-md-8">
+                <span class="user-component-header-text">Korisnici</span>
+            </div>
+            <div class="col-md-2">
+                <select name="userTypes" id="" class="float-right form-control"
+                    (change)="onChange($event.target.value)">
+                    <option value="tim">Timovi</option>
+                    <option value="pregledač">Pregledači</option>
+                    <option value="žiri">Žiri</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary float-right" mat-raised-button>
+                    <img src="../../../../assets/icons/user-plus.svg" alt=""
+                        style="height: 22px; width: 18px; vertical-align: text-top;">
+                    Dodaj korisnika
+                </button>
+            </div>
+        </div>
+    </div>
+    <app-teams-table *ngIf="userType == 'tim'"></app-teams-table>
+    <app-grader-table *ngIf="userType == 'pregledač'"></app-grader-table>
+    <app-jury-table *ngIf="userType == 'žiri'"></app-jury-table>
+</div>

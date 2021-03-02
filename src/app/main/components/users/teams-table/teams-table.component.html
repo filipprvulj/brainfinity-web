@@ -1,0 +1,54 @@
+<div class="data-table">
+    <div class="mat-elevation-z8 table">
+        <table mat-table [dataSource]="dataSource | paginate: {
+            itemsPerPage: pageSize,
+            currentPage: pageIndex,
+            totalItems: resultsLength
+        }">
+            <ng-container matColumnDef="teamName">
+                <th mat-header-cell *matHeaderCellDef> Ime tima</th>
+                <td mat-cell *matCellDef="let row"> {{row.teamName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> E-mail tima</th>
+                <td mat-cell *matCellDef="let row"> {{row.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mentor">
+                <th mat-header-cell *matHeaderCellDef> Mentor</th>
+                <td mat-cell *matCellDef="let row"> {{row.mentor}} </td>
+            </ng-container>
+            <ng-container matColumnDef="grade">
+                <th mat-header-cell *matHeaderCellDef> Razred</th>
+                <td mat-cell *matCellDef="let row"> {{row.grade}} </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Akcije</th>
+                <td mat-cell *matCellDef="let row">
+                    <section>
+                        <div class="button-row">
+                            <button mat-raised-button color="primary"
+                                (click)="applyForCompetition(row.id)">Prijavi</button>
+                            <button mat-raised-button color="basic">Ban</button>
+                            <button (click)="deleteUserDialog(row.id)" mat-raised-button color="warn">Delete</button>
+                        </div>
+                    </section>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="header-row">
+                <th mat-header-cell *matHeaderCellDef colspan="2">Timovi</th>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['header-row']" class="header-row"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <!-- <app-spinner [isLoading]="isLoading"></app-spinner>
+        <app-error [error]="error"></app-error> -->
+        <!-- <mat-paginator [pageIndex]="pageIndex" [pageSize]="pageSize" [length]="resultsLength"
+            (page)="paginator($event)" ></mat-paginator> -->
+
+        <pagination-controls class="my-pagination" (pageChange)="paginator($event)" maxSize="5" directionLinks="true"
+            previousLabel="" nextLabel=""></pagination-controls>
+    </div>
+</div>

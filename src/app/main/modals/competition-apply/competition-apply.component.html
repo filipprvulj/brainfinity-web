@@ -1,0 +1,16 @@
+<div class="dialog">
+    <div mat-dialog-content>
+        <p>Odaberi takmičenje</p>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <select formControlName="competitions">
+                <option *ngFor="let competition of competitions; let i = index" [value]="competition.id">
+                    {{competition.competitionName}}
+                </option>
+            </select>
+        </form>
+    </div>
+    <div class="dialog-actions" mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="close()">Cancel</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>Potvrdi</button>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="data-table">
+    <div class="mat-elevation-z8 table">
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email</th>
+                <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef> Full Name</th>
+                <td mat-cell *matCellDef="let row"> {{row.fullName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef> Username</th>
+                <td mat-cell *matCellDef="let row"> {{row.username}} </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions</th>
+                <td mat-cell *matCellDef="let row">
+                    <section>
+                        <div class="button-row">
+                            <button mat-raised-button color="primary">Edit</button>
+                            <button mat-raised-button color="basic">Ban</button>
+                            <button (click)="deleteUserDialog(row.id)" mat-raised-button color="warn">Delete</button>
+                        </div>
+                    </section>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <!-- <app-spinner [isLoading]="isLoading"></app-spinner>
+        <app-error [error]="error"></app-error> -->
+        <mat-paginator [pageIndex]="pageIndex" [pageSize]="pageSize" [length]="resultsLength"
+            [pageSizeOptions]="[5, 10, 25, 100]" (page)="paginator($event)"></mat-paginator>
+    </div>
+</div>
