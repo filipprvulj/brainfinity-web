@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Competition } from '../../models/competition.model';
 import { CompetitionApplyModalService } from '../../services/competition-apply-modal.service';
 
@@ -10,17 +11,22 @@ import { CompetitionApplyModalService } from '../../services/competition-apply-m
   templateUrl: './competition-apply.component.html',
   styleUrls: ['./competition-apply.component.sass']
 })
-export class CompetitionApplyComponent implements OnInit {
+export class CompetitionApplyComponent implements OnInit, OnDestroy {
 
   private getCompetitionSubsciption: Subscription = new Subscription();
   form: FormGroup;
   competitions: Competition[] = [];
   error: string;
+  competitionId: string = ''
 
 
-  constructor(public dialogRef: MatDialogRef<CompetitionApplyComponent>, private formBuilder: FormBuilder, private competitionModalService: CompetitionApplyModalService) {
+  constructor(public dialogRef: MatDialogRef<CompetitionApplyComponent>,
+    private formBuilder: FormBuilder,
+    private competitionModalService: CompetitionApplyModalService,
+  ) {
+
     this.form = this.formBuilder.group({
-      competitions: ['']
+      competitions: ['', Validators.required]
     })
   }
 
@@ -47,5 +53,7 @@ export class CompetitionApplyComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  submit() { }
+  ngOnDestroy(): void {
+    this.getCompetitionSubsciption.unsubscribe();
+  }
 }
